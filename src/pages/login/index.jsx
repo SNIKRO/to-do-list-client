@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { logIn } from '../../api/authorization';
 
 export default function Login() {

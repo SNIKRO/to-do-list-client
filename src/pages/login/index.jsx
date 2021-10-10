@@ -13,7 +13,7 @@ import {
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useState } from 'react';
-import { logIn } from '../../api/authorization';
+import { logIn } from '../../api/user';
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);

@@ -14,7 +14,7 @@ export async function logIn(email, password) {
   }
 }
 
-export async function Registration(name, email, password) {
+export async function registration(name, email, password) {
   try {
     const formData = new FormData();
     formData.append('name', name);

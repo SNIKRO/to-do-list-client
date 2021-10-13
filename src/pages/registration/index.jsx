@@ -13,9 +13,9 @@ import {
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useState } from 'react';
-import { Registration } from '../../api/user';
+import { registration } from '../../api/user';
 
-export default function RegistrationForm() {
+export default function registrationForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -38,7 +38,7 @@ export default function RegistrationForm() {
   }
 
   function handleFormSubmit() {
-    Registration(name, email, password);
+    registration(name, email, password);
   }
   return (
     <Container maxWidth="sx" sx={{ display: 'flex', height: '100%', p: 2 }}>

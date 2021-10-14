@@ -14,12 +14,15 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useState } from 'react';
 import { registration } from '../../api/user';
+import { Link, useHistory } from 'react-router-dom';
+import { SIGN_IN } from '../../api/urls';
 
 export default function registrationForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const history = useHistory();
 
   function handleShowPasswordClick() {
     setShowPassword(!showPassword);
@@ -37,8 +40,9 @@ export default function registrationForm() {
     setPassword(event.target.value);
   }
 
-  function handleFormSubmit() {
-    registration(name, email, password);
+  async function handleFormSubmit() {
+    await registration(name, email, password);
+    history.push(SIGN_IN);
   }
   return (
     <Container maxWidth="sx" sx={{ display: 'flex', height: '100%', p: 2 }}>
@@ -91,6 +95,9 @@ export default function registrationForm() {
           <Button variant="contained" onClick={handleFormSubmit}>
             Registration
           </Button>
+          <Link className="signInLink" to={SIGN_IN}>
+            Or you can click here to sign in
+          </Link>
         </Stack>
       </Box>
     </Container>

@@ -41,7 +41,7 @@ export default function login() {
       <Box sx={{ width: 600, m: 'auto' }}>
         <Stack direction="column" spacing={2}>
           <Typography variant="h4" gutterBottom>
-            LogIn Form
+            Log In Form
           </Typography>
           <FormControl fullWidth>
             <InputLabel htmlFor="email">Email address</InputLabel>
@@ -74,7 +74,7 @@ export default function login() {
             />
           </FormControl>
           <Button variant="contained" onClick={handleFormSubmit}>
-            LogIn
+            Log In
           </Button>
         </Stack>
       </Box>

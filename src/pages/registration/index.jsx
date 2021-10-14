@@ -14,7 +14,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useState } from 'react';
 import { registration } from '../../api/user';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { LOG_IN } from '../../routing/routes';
 
 export default function registrationForm() {
@@ -95,7 +95,7 @@ export default function registrationForm() {
           <Button variant="contained" onClick={handleFormSubmit}>
             Registration
           </Button>
-          <Button variant="contained" href={LOG_IN}>
+          <Button variant="outlined" href={LOG_IN}>
             Log In
           </Button>
         </Stack>

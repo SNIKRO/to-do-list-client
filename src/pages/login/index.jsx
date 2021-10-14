@@ -13,9 +13,9 @@ import {
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useState } from 'react';
-import { logIn } from '../../api/authorization';
+import { logIn } from '../../api/user';
 
-export default function Login() {
+export default function login() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -41,7 +41,7 @@ export default function Login() {
       <Box sx={{ width: 600, m: 'auto' }}>
         <Stack direction="column" spacing={2}>
           <Typography variant="h4" gutterBottom>
-            LogIn Form
+            Log In Form
           </Typography>
           <FormControl fullWidth>
             <InputLabel htmlFor="email">Email address</InputLabel>
@@ -74,7 +74,7 @@ export default function Login() {
             />
           </FormControl>
           <Button variant="contained" onClick={handleFormSubmit}>
-            LogIn
+            Log In
           </Button>
         </Stack>
       </Box>

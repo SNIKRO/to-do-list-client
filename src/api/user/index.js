@@ -9,8 +9,9 @@ export async function logIn(email, password) {
     const response = await axios.post(SIGN_IN, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
     localStorage.setItem('accessToken', response.data.accessToken);
     localStorage.setItem('refreshToken', response.data.refreshToken);
+    console.log(response.status);
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 }
 

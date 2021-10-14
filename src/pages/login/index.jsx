@@ -9,16 +9,18 @@ import {
   Stack,
   Button,
   Typography,
+  Snackbar,
 } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { logIn } from '../../api/user';
 
 export default function login() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [open, setOpen] = useState(false);
 
   function handleShowPasswordClick() {
     setShowPassword(!showPassword);
@@ -32,8 +34,12 @@ export default function login() {
     setPassword(event.target.value);
   }
 
-  function handleFormSubmit() {
-    logIn(email, password);
+  async function handleFormSubmit() {
+    try {
+      await logIn(email, password);
+    } catch (error) {
+      setOpen(true);
+    }
   }
 
   return (
@@ -54,7 +60,6 @@ export default function login() {
               placeholder="input your email"
             />
           </FormControl>
-
           <FormControl fullWidth>
             <InputLabel htmlFor="password">Password</InputLabel>
             <Input
@@ -76,6 +81,7 @@ export default function login() {
           <Button variant="contained" onClick={handleFormSubmit}>
             Log In
           </Button>
+          <Snackbar open={open} autoHideDuration={6000} message="Wrong password or email" />
         </Stack>
       </Box>
     </Container>

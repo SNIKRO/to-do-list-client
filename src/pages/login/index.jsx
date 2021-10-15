@@ -81,7 +81,7 @@ export default function login() {
           <Button variant="contained" onClick={handleFormSubmit}>
             Log In
           </Button>
-          <Snackbar open={open} autoHideDuration={6000} message="Wrong password or email" />
+          <Snackbar open={open} message="Wrong password or email" />
         </Stack>
       </Box>
     </Container>

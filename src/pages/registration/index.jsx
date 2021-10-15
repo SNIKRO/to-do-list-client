@@ -9,6 +9,7 @@ import {
   Stack,
   Button,
   Typography,
+  TextField,
 } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -16,6 +17,7 @@ import { useState } from 'react';
 import { registration } from '../../api/user';
 import { useHistory } from 'react-router-dom';
 import { LOG_IN } from '../../routing/routes';
+import validator from 'validator';
 
 export default function registrationForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -33,7 +35,10 @@ export default function registrationForm() {
   }
 
   function handleEmailChange(event) {
-    setEmail(event.target.value);
+    const { value } = event.target;
+    setEmail(value);
+    if (!validator.isEmail(value)) {
+    }
   }
 
   function handlePasswordChange(event) {
@@ -44,6 +49,7 @@ export default function registrationForm() {
     await registration(name, email, password);
     history.push(LOG_IN);
   }
+
   return (
     <Container maxWidth="sx" sx={{ display: 'flex', height: '100%', p: 2 }}>
       <Box sx={{ width: 600, m: 'auto' }}>
@@ -51,28 +57,25 @@ export default function registrationForm() {
           <Typography variant="h4" gutterBottom>
             Registration Form
           </Typography>
-          <FormControl fullWidth>
-            <InputLabel htmlFor="userName">Your name</InputLabel>
-            <Input
-              id="userName"
-              type="name"
-              aria-describedby="my-helper-text"
-              value={name}
-              onChange={handleNameChange}
-              placeholder="input your name"
-            />
-          </FormControl>
-          <FormControl fullWidth>
-            <InputLabel htmlFor="email">Email address</InputLabel>
-            <Input
-              id="email"
-              type="email"
-              aria-describedby="my-helper-text"
-              value={email}
-              onChange={handleEmailChange}
-              placeholder="input your email"
-            />
-          </FormControl>
+          <TextField
+            fullWidth
+            type="name"
+            label="name"
+            variant="outlined"
+            value={name}
+            onChange={handleNameChange}
+            placeholder="input your name"
+          />
+
+          <TextField
+            fullWidth
+            type="email"
+            value={email}
+            label="Email"
+            variant="outlined"
+            onChange={handleEmailChange}
+            placeholder="input your email"
+          />
 
           <FormControl fullWidth>
             <InputLabel htmlFor="password">Password</InputLabel>

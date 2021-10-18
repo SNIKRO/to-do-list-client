@@ -39,11 +39,12 @@ export default function registrationForm() {
   function handleEmailChange(event) {
     const { value } = event.target;
     setEmail(value);
-    if (!validator.isEmail(value)) {
-      setError(true);
+    console.log(value);
+    if (validator.isEmail(value) || value === '') {
+      setError(false);
       return;
     }
-    setError(false);
+    setError(true);
   }
 
   function handlePasswordChange(event) {

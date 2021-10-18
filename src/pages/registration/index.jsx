@@ -24,8 +24,10 @@ export default function registrationForm() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(false);
   const history = useHistory();
 
+  //let error = '';
   function handleShowPasswordClick() {
     setShowPassword(!showPassword);
   }
@@ -38,7 +40,10 @@ export default function registrationForm() {
     const { value } = event.target;
     setEmail(value);
     if (!validator.isEmail(value)) {
+      setError(true);
+      return;
     }
+    setError(false);
   }
 
   function handlePasswordChange(event) {
@@ -60,8 +65,8 @@ export default function registrationForm() {
           <TextField
             fullWidth
             type="name"
-            label="name"
-            variant="outlined"
+            label="Name"
+            variant="standard"
             value={name}
             onChange={handleNameChange}
             placeholder="input your name"
@@ -70,9 +75,11 @@ export default function registrationForm() {
           <TextField
             fullWidth
             type="email"
+            error={error}
+            helperText={error ? 'incorrect email' : null}
             value={email}
             label="Email"
-            variant="outlined"
+            variant="standard"
             onChange={handleEmailChange}
             placeholder="input your email"
           />

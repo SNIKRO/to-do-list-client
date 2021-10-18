@@ -13,9 +13,9 @@ export async function logIn(email, password) {
     console.log(response.status);
   } catch (error) {
     if (error.response.status === 403) {
-      throw new ServiceError(error.message);
+      throw new ApiError('Pair login password is incorrect');
     }
-    throw new ServiceError('something went wrong');
+    throw new ApiError('something went wrong');
   }
 }
 
@@ -29,8 +29,8 @@ export async function registration(name, email, password) {
     console.log(response.status);
   } catch (error) {
     if (error.response.status === 400) {
-      throw new ApiError(error.message);
+      throw new ApiError(error.response.data);
     }
-    throw new ServiceError('something went wrong');
+    throw new ApiError('something went wrong');
   }
 }

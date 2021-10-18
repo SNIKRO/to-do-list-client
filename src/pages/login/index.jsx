@@ -10,17 +10,19 @@ import {
   Button,
   Typography,
   Snackbar,
+  Alert,
 } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Fragment, useState } from 'react';
 import { logIn } from '../../api/user';
+import { REGISTRATION } from '../../routing/routes';
 
 export default function login() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [open, setOpen] = useState(false);
+  const [authError, setState] = useState('');
 
   function handleShowPasswordClick() {
     setShowPassword(!showPassword);
@@ -38,7 +40,7 @@ export default function login() {
     try {
       await logIn(email, password);
     } catch (error) {
-      setOpen(true);
+      setState(error.message);
     }
   }
 
@@ -81,7 +83,12 @@ export default function login() {
           <Button variant="contained" onClick={handleFormSubmit}>
             Log In
           </Button>
-          <Snackbar open={open} message="Wrong password or email" />
+          <Button variant="outlined" href={REGISTRATION}>
+            REGISTRATION
+          </Button>
+          <Snackbar open={!!authError}>
+            <Alert severity="error">{authError}</Alert>
+          </Snackbar>
         </Stack>
       </Box>
     </Container>

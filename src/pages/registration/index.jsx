@@ -24,10 +24,9 @@ export default function registrationForm() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(false);
+  const [emailValidation, setState] = useState(false);
   const history = useHistory();
 
-  //let error = '';
   function handleShowPasswordClick() {
     setShowPassword(!showPassword);
   }
@@ -41,10 +40,10 @@ export default function registrationForm() {
     setEmail(value);
     console.log(value);
     if (validator.isEmail(value) || value === '') {
-      setError(false);
+      setState('');
       return;
     }
-    setError(true);
+    setState('incorrect email');
   }
 
   function handlePasswordChange(event) {
@@ -52,7 +51,12 @@ export default function registrationForm() {
   }
 
   async function handleFormSubmit() {
-    await registration(name, email, password);
+    try {
+      await registration(name, email, password);
+    } catch (error) {
+      setState(error.message);
+      return;
+    }
     history.push(LOG_IN);
   }
 
@@ -76,8 +80,8 @@ export default function registrationForm() {
           <TextField
             fullWidth
             type="email"
-            error={error}
-            helperText={error ? 'incorrect email' : null}
+            error={!!emailValidation}
+            helperText={emailValidation ? emailValidation : null}
             value={email}
             label="Email"
             variant="standard"

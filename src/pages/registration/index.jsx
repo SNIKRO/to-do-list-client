@@ -9,6 +9,7 @@ import {
   Stack,
   Button,
   Typography,
+  TextField,
 } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -16,12 +17,16 @@ import { useState } from 'react';
 import { registration } from '../../api/user';
 import { useHistory } from 'react-router-dom';
 import { LOG_IN } from '../../routing/routes';
+import validator from 'validator';
 
 export default function registrationForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [emailValidation, setAuthError] = useState('');
+  const [passwordValidation, setPasswordState] = useState('');
+  const [nameValidation, setNameState] = useState('');
   const history = useHistory();
 
   function handleShowPasswordClick() {
@@ -29,21 +34,57 @@ export default function registrationForm() {
   }
 
   function handleNameChange(event) {
-    setName(event.target.value);
+    const { value } = event.target;
+    setName(value);
+    if (value) {
+      setNameState('');
+      return;
+    }
+    setNameState('Name cannot be empty');
   }
 
   function handleEmailChange(event) {
-    setEmail(event.target.value);
+    const { value } = event.target;
+    setEmail(value);
+    if (validator.isEmail(value) || value === '') {
+      setAuthError('');
+      return;
+    }
+    setAuthError('incorrect email');
   }
 
   function handlePasswordChange(event) {
-    setPassword(event.target.value);
+    const { value } = event.target;
+    setPassword(value);
+    if (
+      validator.isStrongPassword(value, {
+        minLength: 5,
+        minLowercase: 0,
+        minUppercase: 0,
+        minNumbers: 0,
+        minSymbols: 0,
+        returnScore: false,
+      }) ||
+      value === ''
+    ) {
+      setPasswordState('');
+      return;
+    }
+    setPasswordState('Password length must be more than 5 characters');
   }
 
   async function handleFormSubmit() {
-    await registration(name, email, password);
-    history.push(LOG_IN);
+    if (nameValidation || passwordValidation || emailValidation) {
+      return;
+    }
+    try {
+      await registration(name, email, password);
+      history.push(LOG_IN);
+    } catch (error) {
+      setAuthError(error.message);
+    }
   }
+
   return (
     <Container maxWidth="sx" sx={{ display: 'flex', height: '100%', p: 2 }}>
       <Box sx={{ width: 600, m: 'auto' }}>
@@ -51,31 +92,32 @@ export default function registrationForm() {
           <Typography variant="h4" gutterBottom>
             Registration Form
           </Typography>
-          <FormControl fullWidth>
-            <InputLabel htmlFor="userName">Your name</InputLabel>
-            <Input
-              id="userName"
-              type="name"
-              aria-describedby="my-helper-text"
-              value={name}
-              onChange={handleNameChange}
-              placeholder="input your name"
-            />
-          </FormControl>
-          <FormControl fullWidth>
-            <InputLabel htmlFor="email">Email address</InputLabel>
-            <Input
-              id="email"
-              type="email"
-              aria-describedby="my-helper-text"
-              value={email}
-              onChange={handleEmailChange}
-              placeholder="input your email"
-            />
-          </FormControl>
+          <TextField
+            fullWidth
+            error={!!nameValidation}
+            helperText={nameValidation ? nameValidation : null}
+            type="name"
+            label="Name"
+            variant="standard"
+            value={name}
+            onChange={handleNameChange}
+            placeholder="input your name"
+          />
 
-          <FormControl fullWidth>
-            <InputLabel htmlFor="password">Password</InputLabel>
+          <TextField
+            fullWidth
+            type="email"
+            error={!!emailValidation}
+            helperText={emailValidation ? emailValidation : null}
+            value={email}
+            label="Email"
+            variant="standard"
+            onChange={handleEmailChange}
+            placeholder="input your email"
+          />
+
+          <FormControl fullWidth error={!!passwordValidation}>
+            <InputLabel htmlFor="password">{!!passwordValidation ? passwordValidation : 'Password'}</InputLabel>
             <Input
               id="password"
               onChange={handlePasswordChange}

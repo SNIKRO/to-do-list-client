@@ -9,16 +9,20 @@ import {
   Stack,
   Button,
   Typography,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useState } from 'react';
 import { logIn } from '../../api/user';
+import { REGISTRATION } from '../../routing/routes';
 
 export default function login() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [authError, setAuthError] = useState('');
 
   function handleShowPasswordClick() {
     setShowPassword(!showPassword);
@@ -32,8 +36,12 @@ export default function login() {
     setPassword(event.target.value);
   }
 
-  function handleFormSubmit() {
-    logIn(email, password);
+  async function handleFormSubmit() {
+    try {
+      await logIn(email, password);
+    } catch (error) {
+      setAuthError(error.message);
+    }
   }
 
   return (
@@ -54,7 +62,6 @@ export default function login() {
               placeholder="input your email"
             />
           </FormControl>
-
           <FormControl fullWidth>
             <InputLabel htmlFor="password">Password</InputLabel>
             <Input
@@ -76,6 +83,12 @@ export default function login() {
           <Button variant="contained" onClick={handleFormSubmit}>
             Log In
           </Button>
+          <Button variant="outlined" href={REGISTRATION}>
+            REGISTRATION
+          </Button>
+          <Snackbar open={!!authError}>
+            <Alert severity="error">{authError}</Alert>
+          </Snackbar>
         </Stack>
       </Box>
     </Container>

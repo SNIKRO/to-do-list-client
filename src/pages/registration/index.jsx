@@ -24,7 +24,9 @@ export default function registrationForm() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [emailValidation, setState] = useState(false);
+  const [emailValidation, setState] = useState('');
+  const [passwordValidation, setPasswordState] = useState('');
+  const [nameValidation, setNameState] = useState('');
   const history = useHistory();
 
   function handleShowPasswordClick() {
@@ -32,13 +34,18 @@ export default function registrationForm() {
   }
 
   function handleNameChange(event) {
-    setName(event.target.value);
+    const { value } = event.target;
+    setName(value);
+    if (value) {
+      setNameState('');
+      return;
+    }
+    setNameState('Name cannot be empty');
   }
 
   function handleEmailChange(event) {
     const { value } = event.target;
     setEmail(value);
-    console.log(value);
     if (validator.isEmail(value) || value === '') {
       setState('');
       return;
@@ -47,17 +54,34 @@ export default function registrationForm() {
   }
 
   function handlePasswordChange(event) {
-    setPassword(event.target.value);
+    const { value } = event.target;
+    setPassword(value);
+    if (
+      validator.isStrongPassword(value, {
+        minLength: 5,
+        minLowercase: 0,
+        minUppercase: 0,
+        minNumbers: 0,
+        minSymbols: 0,
+        returnScore: false,
+      }) ||
+      value === ''
+    ) {
+      setPasswordState('');
+      return;
+    }
+    setPasswordState('Password length must be more than 5 characters');
   }
 
   async function handleFormSubmit() {
-    try {
-      await registration(name, email, password);
-    } catch (error) {
-      setState(error.message);
-      return;
+    if (!!nameValidation && !!passwordValidation && !!emailValidation) {
+      try {
+        await registration(name, email, password);
+        history.push(LOG_IN);
+      } catch (error) {
+        setState(error.message);
+      }
     }
-    history.push(LOG_IN);
   }
 
   return (
@@ -69,6 +93,8 @@ export default function registrationForm() {
           </Typography>
           <TextField
             fullWidth
+            error={!!nameValidation}
+            helperText={nameValidation ? nameValidation : null}
             type="name"
             label="Name"
             variant="standard"
@@ -90,8 +116,11 @@ export default function registrationForm() {
           />
 
           <FormControl fullWidth>
-            <InputLabel htmlFor="password">Password</InputLabel>
+            <InputLabel htmlFor="password" color={!!passwordValidation ? 'warning' : null}>
+              {!!passwordValidation ? passwordValidation : 'Password'}
+            </InputLabel>
             <Input
+              error={!!passwordValidation}
               id="password"
               onChange={handlePasswordChange}
               value={password}

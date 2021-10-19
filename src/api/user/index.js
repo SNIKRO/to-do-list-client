@@ -10,7 +10,6 @@ export async function logIn(email, password) {
     const response = await axios.post(SIGN_IN, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
     localStorage.setItem('accessToken', response.data.accessToken);
     localStorage.setItem('refreshToken', response.data.refreshToken);
-    console.log(response.status);
   } catch (error) {
     if (error.response.status === 403) {
       throw new ApiError('Pair login password is incorrect');
@@ -26,7 +25,6 @@ export async function registration(name, email, password) {
     formData.append('email', email);
     formData.append('password', password);
     const response = await axios.post(SIGN_UP, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
-    console.log(response.status);
   } catch (error) {
     if (error.response.status === 400) {
       throw new ApiError(error.response.data);

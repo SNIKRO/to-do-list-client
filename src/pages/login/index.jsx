@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 import { logIn } from '../../api/user';
 import { REGISTRATION } from '../../routing/routes';
 
@@ -22,7 +22,7 @@ export default function login() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [authError, setState] = useState('');
+  const [authError, setAuthError] = useState('');
 
   function handleShowPasswordClick() {
     setShowPassword(!showPassword);
@@ -40,7 +40,7 @@ export default function login() {
     try {
       await logIn(email, password);
     } catch (error) {
-      setState(error.message);
+      setAuthError(error.message);
     }
   }
 

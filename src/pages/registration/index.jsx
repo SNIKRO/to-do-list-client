@@ -24,7 +24,7 @@ export default function registrationForm() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [emailValidation, setState] = useState('');
+  const [emailValidation, setAuthError] = useState('');
   const [passwordValidation, setPasswordState] = useState('');
   const [nameValidation, setNameState] = useState('');
   const history = useHistory();
@@ -47,10 +47,10 @@ export default function registrationForm() {
     const { value } = event.target;
     setEmail(value);
     if (validator.isEmail(value) || value === '') {
-      setState('');
+      setAuthError('');
       return;
     }
-    setState('incorrect email');
+    setAuthError('incorrect email');
   }
 
   function handlePasswordChange(event) {
@@ -74,13 +74,14 @@ export default function registrationForm() {
   }
 
   async function handleFormSubmit() {
-    if (!!nameValidation && !!passwordValidation && !!emailValidation) {
-      try {
-        await registration(name, email, password);
-        history.push(LOG_IN);
-      } catch (error) {
-        setState(error.message);
-      }
+    if (nameValidation || passwordValidation || emailValidation) {
+      return;
+    }
+    try {
+      await registration(name, email, password);
+      history.push(LOG_IN);
+    } catch (error) {
+      setAuthError(error.message);
     }
   }
 
@@ -115,12 +116,9 @@ export default function registrationForm() {
             placeholder="input your email"
           />
 
-          <FormControl fullWidth>
-            <InputLabel htmlFor="password" color={!!passwordValidation ? 'warning' : null}>
-              {!!passwordValidation ? passwordValidation : 'Password'}
-            </InputLabel>
+          <FormControl fullWidth error={!!passwordValidation}>
+            <InputLabel htmlFor="password">{!!passwordValidation ? passwordValidation : 'Password'}</InputLabel>
             <Input
-              error={!!passwordValidation}
               id="password"
               onChange={handlePasswordChange}
               value={password}

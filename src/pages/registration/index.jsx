@@ -19,7 +19,7 @@ import { useHistory } from 'react-router-dom';
 import { LOG_IN } from '../../routing/routes';
 import validator from 'validator';
 
-export default function registrationForm() {
+export default function RegistrationForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');

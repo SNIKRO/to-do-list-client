@@ -14,11 +14,12 @@ import {
 } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
 import { logIn } from '../../api/user';
 import { REGISTRATION } from '../../routing/routes';
 
-export default function login() {
+export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -35,6 +36,14 @@ export default function login() {
   function handlePasswordChange(event) {
     setPassword(event.target.value);
   }
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setAuthError('');
+  };
 
   async function handleFormSubmit() {
     try {
@@ -87,7 +96,16 @@ export default function login() {
             REGISTRATION
           </Button>
           <Snackbar open={!!authError}>
-            <Alert severity="error">{authError}</Alert>
+            <Alert
+              severity="error"
+              action={
+                <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+                  <CloseIcon fontSize="small" />
+                </IconButton>
+              }
+            >
+              {authError}
+            </Alert>
           </Snackbar>
         </Stack>
       </Box>

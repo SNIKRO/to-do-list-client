@@ -1,6 +1,8 @@
-import { Container, TextField, Box, Checkbox, FormControlLabel } from '@mui/material';
+import { Container, TextField, Box, Checkbox } from '@mui/material';
 import { useState } from 'react';
 import Modal from '../../components/modal';
+import FormControlLabel from '../../components/list-item';
+import { v4 as uuidv4 } from 'uuid';
 
 /**
  *
@@ -18,7 +20,7 @@ export default function Main() {
   const [newTitle, setNewTitle] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [newItem, setNewItem] = useState('');
-  const [createItem, setCreateItem] = useState(false);
+  const [createItem, setCreateItem] = useState([]);
 
   function handleTitleSubmit(event) {
     if (event.key === 'Enter') {
@@ -27,17 +29,17 @@ export default function Main() {
   }
   function handleItemCreate(event) {
     if (event.key === 'Enter' && showModal) {
-      setCreateItem(true);
-      // const formData = new Map();
-      // let numbers = 0;
-      // formData.set(numbers, <FormControlLabel control={<Checkbox />} label={newItem} />);
-      // numbers += 1;
-      // console.log(numbers);
-      // for (let amount of formData.values()) {
-      //   return setCreateItem(amount);
-      // }
-      //  console.log(createItem);
-      //  return createItem;
+      let itemArray = [
+        ...createItem,
+        {
+          id: uuidv4(),
+          done: false,
+          title: newItem,
+        },
+      ];
+      //console.log(createItem);
+      setCreateItem(itemArray);
+      setNewItem('');
     }
   }
 
@@ -64,7 +66,9 @@ export default function Main() {
         />
       </Box>
       <Modal open={showModal} onClose={handleCloseModal}>
-        {createItem ? <FormControlLabel control={<Checkbox />} label={newItem} /> : null}
+        {createItem.map((item) => (
+          <FormControlLabel key={item.id} label={item.title} />
+        ))}
         <TextField
           fullWidth
           helperText="add new item"

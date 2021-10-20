@@ -1,4 +1,4 @@
-import { Modal, Typography, Box } from '@mui/material';
+import { Modal, Box } from '@mui/material';
 import styles from './Modal.module.css';
 export default function ModalWindow(props) {
   return (

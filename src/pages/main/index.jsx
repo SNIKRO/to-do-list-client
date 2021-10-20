@@ -1,4 +1,4 @@
-import { Container, TextField, Typography, Box } from '@mui/material';
+import { Container, TextField, Box, Checkbox, FormControlLabel } from '@mui/material';
 import { useState } from 'react';
 import Modal from '../../components/modal';
 
@@ -17,12 +17,34 @@ import Modal from '../../components/modal';
 export default function Main() {
   const [newTitle, setNewTitle] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [newItem, setNewItem] = useState('');
+  const [createItem, setCreateItem] = useState(false);
 
   function handleTitleSubmit(event) {
     if (event.key === 'Enter') {
       setShowModal(true);
     }
   }
+  function handleItemCreate(event) {
+    if (event.key === 'Enter' && showModal) {
+      setCreateItem(true);
+      // const formData = new Map();
+      // let numbers = 0;
+      // formData.set(numbers, <FormControlLabel control={<Checkbox />} label={newItem} />);
+      // numbers += 1;
+      // console.log(numbers);
+      // for (let amount of formData.values()) {
+      //   return setCreateItem(amount);
+      // }
+      //  console.log(createItem);
+      //  return createItem;
+    }
+  }
+
+  function handleItemChange(event) {
+    setNewItem(event.target.value);
+  }
+
   function handleTitleChange(event) {
     setNewTitle(event.target.value);
   }
@@ -33,11 +55,24 @@ export default function Main() {
   return (
     <Container maxWidth="sx" sx={{ display: 'flex', height: '100%', p: 2 }}>
       <Box sx={{ width: 600, mx: 'auto' }}>
-        <TextField fullWidth onKeyPress={handleTitleSubmit} value={newTitle} onChange={handleTitleChange} />
+        <TextField
+          fullWidth
+          onKeyPress={handleTitleSubmit}
+          value={newTitle}
+          onChange={handleTitleChange}
+          placeholder="List name"
+        />
       </Box>
       <Modal open={showModal} onClose={handleCloseModal}>
-        test
-        <TextField fullWidth></TextField>
+        {createItem ? <FormControlLabel control={<Checkbox />} label={newItem} /> : null}
+        <TextField
+          fullWidth
+          helperText="add new item"
+          label={newTitle}
+          value={newItem}
+          onChange={handleItemChange}
+          onKeyPress={handleItemCreate}
+        />
       </Modal>
     </Container>
   );

@@ -10,12 +10,13 @@ import {
   Button,
   Typography,
   TextField,
+  FormHelperText,
 } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useState } from 'react';
 import { registration } from '../../api/user';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { LOG_IN } from '../../routing/routes';
 import validator from 'validator';
 
@@ -116,8 +117,8 @@ export default function RegistrationForm() {
             placeholder="input your email"
           />
 
-          <FormControl fullWidth error={!!passwordValidation}>
-            <InputLabel htmlFor="password">{!!passwordValidation ? passwordValidation : 'Password'}</InputLabel>
+          <FormControl fullWidth error={!!passwordValidation} variant="standard">
+            <InputLabel htmlFor="password">Password</InputLabel>
             <Input
               id="password"
               onChange={handlePasswordChange}
@@ -131,14 +132,14 @@ export default function RegistrationForm() {
                   </IconButton>
                 </InputAdornment>
               }
-              label="Password"
             />
+            {passwordValidation ? <FormHelperText>{passwordValidation}</FormHelperText> : null}
           </FormControl>
           <Button variant="contained" onClick={handleFormSubmit}>
             Registration
           </Button>
-          <Button variant="outlined" href={LOG_IN}>
-            Log In
+          <Button variant="outlined">
+            <Link to={LOG_IN}>Log In</Link>
           </Button>
         </Stack>
       </Box>

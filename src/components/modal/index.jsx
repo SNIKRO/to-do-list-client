@@ -1,12 +1,25 @@
 import { Modal, Box, Button } from '@mui/material';
+import PropTypes from 'prop-types';
 import styles from './Modal.module.css';
-export default function ModalWindow(props) {
+export default function ModalWindow({ open, onClose, okTitle, onOk, children }) {
   return (
-    <Modal open={props.open} onClose={props.onClose}>
+    <Modal open={open} onClose={onClose}>
       <Box className={styles.container} sx={{ p: 4 }}>
-        {props.children}
-        <Button variant="contained">Create</Button>
+        {children}
+        <Button sx={{ mt: 2 }} variant="contained" onClick={onOk}>
+          {okTitle}
+        </Button>
       </Box>
     </Modal>
   );
 }
+ModalWindow.propTypes = {
+  open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  okTitle: PropTypes.string,
+  onOk: PropTypes.func,
+};
+ModalWindow.defaultProps = {
+  okTitle: 'ok',
+  onOk: undefined,
+};

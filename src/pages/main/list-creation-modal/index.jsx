@@ -5,6 +5,7 @@ import { v4 as uuid } from 'uuid';
 import { useState } from 'react';
 import { TextField } from '@mui/material';
 import { createList } from '../../../api/list';
+import { createItems } from '../../../api/item';
 import styles from './ListCreationModal.module.css';
 
 export default function ListCreationModal({ open, onClose, titleValue, titleValueChange }) {
@@ -40,6 +41,7 @@ export default function ListCreationModal({ open, onClose, titleValue, titleValu
   async function handleCreationList() {
     try {
       const listId = await createList(titleValue);
+      await createItems(listId, itemList);
     } catch (error) {
       console.log(error);
     }

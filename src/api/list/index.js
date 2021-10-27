@@ -5,7 +5,7 @@ import ApiError from '../../errors/apierror';
 export async function createList(name) {
   try {
     const response = await axios.post(LISTS, { name });
-    console.log(response.data);
+    return response.data;
   } catch (error) {
     throw new ApiError('something went wrong');
   }

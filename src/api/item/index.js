@@ -6,7 +6,8 @@ import populateURL from '../../utils';
 export async function createItems(listId, items) {
   try {
     items.forEach((element) => {
-      axios.post(populateURL(ITEMS, listId), element.title);
+      const description = element.title;
+      axios.post(populateURL(ITEMS, listId), { description });
     });
   } catch (error) {
     throw new ApiError(error);

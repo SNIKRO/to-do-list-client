@@ -1,17 +1,6 @@
 import { Container, TextField, Box } from '@mui/material';
 import { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import ListCreationModal from './list-creation-modal';
-
-/**
- *
- * при нажатии на кнопку создать посылаем запрос на бек
- * после создания листа нужно вызывать апи для айтема и создовать их по очереди
- * на нажитие кнопки проверять пустой или нет текст филд
- * закрыаем модалку
- *
- *
- */
 
 export default function Main() {
   const [newTitle, setNewTitle] = useState('');
@@ -26,6 +15,7 @@ export default function Main() {
   function handleTitleChange(event) {
     setNewTitle(event.target.value);
   }
+
   function handleCloseModal() {
     setShowModal(false);
     setNewTitle('');

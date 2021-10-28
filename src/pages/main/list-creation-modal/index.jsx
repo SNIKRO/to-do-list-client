@@ -11,9 +11,15 @@ import styles from './ListCreationModal.module.css';
 export default function ListCreationModal({ open, onClose, titleValue, titleValueChange }) {
   const [itemList, setItemList] = useState([]);
   const [newItem, setNewItem] = useState('');
+  const [error, setError] = useState('');
 
   function handleItemChange(event) {
     setNewItem(event.target.value);
+  }
+
+  function handleTitleValueChange(event) {
+    setError('');
+    titleValueChange(event);
   }
 
   function handleItemCreate(event) {
@@ -31,6 +37,13 @@ export default function ListCreationModal({ open, onClose, titleValue, titleValu
     }
   }
 
+  function handleModalClose() {
+    onClose();
+    setError('');
+    setItemList([]);
+    setNewItem('');
+  }
+
   function handleDeleteItem(itemID) {
     const newItemList = itemList.filter((item) => {
       return item.id != itemID;
@@ -40,21 +53,29 @@ export default function ListCreationModal({ open, onClose, titleValue, titleValu
 
   async function handleCreationList() {
     try {
+      if (!titleValue.trim()) {
+        setError('can`t be empty');
+        return;
+      }
+      setError('');
       const listId = await createList(titleValue);
       await createItems(listId, itemList);
+      handleModalClose();
     } catch (error) {
       console.log(error);
     }
   }
 
   return (
-    <Modal open={open} onClose={onClose} okTitle="Create" onOk={handleCreationList}>
+    <Modal open={open} onClose={handleModalClose} okTitle="Create" onOk={handleCreationList}>
       <TextField
         fullWidth
+        error={!!error}
+        helperText={error}
         sx={{ mb: 2 }}
         placeholder="List Title"
         value={titleValue}
-        onChange={titleValueChange}
+        onChange={handleTitleValueChange}
         size="small"
       />
       <ul className={styles.list}>

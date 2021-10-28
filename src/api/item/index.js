@@ -5,10 +5,11 @@ import populateURL from '../../utils';
 
 export async function createItems(listId, items) {
   try {
-    items.forEach((element) => {
+    const promises = items.map((element) => {
       const description = element.title;
-      axios.post(populateURL(ITEMS, listId), { description });
+      return axios.post(populateURL(ITEMS, { listId }), { description });
     });
+    await Promise.all(promises);
   } catch (error) {
     throw new ApiError(error);
   }

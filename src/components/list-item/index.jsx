@@ -8,7 +8,7 @@ export default function ListItem(props) {
   return (
     <Box sx={{ display: 'flex', alignItems: 'center' }}>
       <Checkbox />
-      <Typography variant="body1">{props.item.title}</Typography>
+      <Typography variant="body1">{props.item.description}</Typography>
       <IconButton aria-label="delete" onClick={handleDeleteClick}>
         <DeleteIcon />
       </IconButton>

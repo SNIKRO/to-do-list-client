@@ -1,10 +1,10 @@
 import Modal from '../../../components/modal';
 import ListItem from '../../../components/list-item';
-import PropTypes from 'prop-types';
+import PropTypes, { element } from 'prop-types';
 import { v4 as uuid } from 'uuid';
 import { useState } from 'react';
 import { TextField } from '@mui/material';
-import { createList } from '../../../api/list';
+import { createList, createListWithItems } from '../../../api/list';
 import { createItems } from '../../../api/item';
 import styles from './ListCreationModal.module.css';
 
@@ -29,7 +29,7 @@ export default function ListCreationModal({ open, onClose, titleValue, titleValu
         {
           id: uuid(),
           done: false,
-          title: newItem,
+          description: newItem,
         },
       ];
       setItemList(newItemList);
@@ -58,8 +58,12 @@ export default function ListCreationModal({ open, onClose, titleValue, titleValu
         return;
       }
       setError('');
-      const listId = await createList(titleValue);
-      await createItems(listId, itemList);
+      await createListWithItems(
+        titleValue,
+        itemList.map((element) => {
+          return { description: element.description };
+        }),
+      );
       handleModalClose();
     } catch (error) {
       console.log(error);
